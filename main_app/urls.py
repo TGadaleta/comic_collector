@@ -1,8 +1,12 @@
 from django.urls import path
-from .views import Home, ComicBookList, ComicBookDetail
+from .views import Home, ComicBookList, ComicBookDetail, CharacterListCreate, CharacterDetail, CharacterAppearanceList, CharacterAppearanceDetail
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
     path('comicbooks/', ComicBookList.as_view(), name='comicbook-list'),
     path('comicbooks/<int:id>/', ComicBookDetail.as_view(), name='comicbook-detail'),
+    path('characters/', CharacterListCreate.as_view(), name='character-list'),
+    path('characters/<int:id>/', CharacterDetail.as_view(), name='character-detail'),
+    path('comicbooks/<int:comic_book_id>/characterappearances/', CharacterAppearanceList.as_view(), name='character-appearance-list'),
+    path('comicbooks/<int:comic_book_id>/characterappearances/<int:id>/', CharacterAppearanceDetail.as_view(), name='character-appearance-detail'),
 ]
