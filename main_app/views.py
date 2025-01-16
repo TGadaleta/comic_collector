@@ -30,6 +30,17 @@ class CharacterDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CharacterSerializer
     lookup_field = 'id'
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        comic_books_not_associated = ComicBook.objects.exclude(id__in=instance.comic_books.all())
+        comic_books_serializer = ComicBookSerializer(comic_books_not_associated, many=True)
+
+        return Response({
+            'comic_book': serializer.data,
+            'comic_books_not_associated': comic_books_serializer.data
+        })
+
 class CharacterAppearanceList(generics.ListCreateAPIView):
     serializer_class = CharacterAppearanceSerializer
     
@@ -49,3 +60,10 @@ class CharacterAppearanceDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         comic_book_id = self.kwargs['comic_book_id']
         return CharacterAppearance.objects.filter(comic_book_id=comic_book_id)
+    
+class AddCharacterToComicBook(APIView):
+    def post(self, request, character_id, comic_book_id):
+        character = Character.objects.get(id=character_id)
+        comic_book = ComicBook.objects.get(id=comic_book_id)
+        character.comic_books.add(comic_book)
+        return Response({ 'message': f"Comic Book {comic_book.title} added to Character {character.name}."})

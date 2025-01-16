@@ -15,6 +15,7 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     alias = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(max_length=250)
+    comic_books = models.ManyToManyField(ComicBook)
 
     def __str__(self):
         return self.name

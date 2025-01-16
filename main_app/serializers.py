@@ -7,6 +7,7 @@ class ComicBookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CharacterSerializer(serializers.ModelSerializer):
+    comic_books = ComicBookSerializer(many=True, read_only=True)
     class Meta:
         model = Character
         fields = '__all__'
