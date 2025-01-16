@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import date
+from django.contrib.auth.models import User
 
 # Create your models here.
 class ComicBook(models.Model):
@@ -7,6 +9,7 @@ class ComicBook(models.Model):
     description = models.TextField()
     release_date = models.DateField()
     page_count = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
